@@ -1,35 +1,50 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]  # O workflow será executado em cada "push" na branch "main".
+    branches: [ main ]
   pull_request:
-    branches: [ main ]  # O workflow será executado em cada "pull request" direcionado à branch "main".
+    branches: [ main ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # Define o sistema operacional para executar o workflow.
+  build-and-deploy:
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       pages: write
-      id-token: write  # Necessário para autenticação OIDC
-    
-    steps:
-      - uses: actions/checkout@v3  # Faz o "checkout" do código do repositório para a máquina virtual.
+      id-token: write  # Permissão necessária para OIDC
 
-      - name: Executar testes
+    steps:
+      # Passo 1: Checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Passo 2: Executar testes (simulado)
+      - name: Run tests
         run: |
           echo "Nenhum teste implementado ainda. Adicione testes em script.js!"
           echo "Podemos adicionar testes com Jest ou Cypress no futuro."
           echo "Testes simulados aprovados"
-          exit 0  # Simula testes passando
-      
-       - name: Upload artifact
+          exit 0
+
+      # Passo 3: Configurar GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      # Passo 4: Build do projeto (simulado - substitua pelo seu build real)
+      - name: Build project
+        run: |
+          echo "Simulando construção do projeto..."
+          mkdir -p dist
+          echo "<html><body><h1>Meu Site</h1></body></html>" > dist/index.html
+
+      # Passo 5: Upload do artefato para deploy
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: 'dist'
+          path: 'dist'  # Pasta contendo os arquivos para deploy
 
-      - name: Deploy para GitHub Pages
-        if: github.ref == 'refs/heads/main'  # Só executa o deploy quando o commit for na branch main.
+      # Passo 6: Deploy (apenas na branch main)
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
         uses: actions/deploy-pages@v2
-        
