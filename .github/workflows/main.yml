@@ -17,7 +17,7 @@ jobs:
     steps:
       # Passo 1: Checkout do código
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Passo 2: Executar testes (simulado)
       - name: Run tests
@@ -29,7 +29,7 @@ jobs:
 
       # Passo 3: Configurar GitHub Pages
       - name: Setup Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v4
 
       # Passo 4: Build do projeto (simulado - substitua pelo seu build real)
       - name: Build project
@@ -47,4 +47,4 @@ jobs:
       # Passo 6: Deploy (apenas na branch main)
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v3
