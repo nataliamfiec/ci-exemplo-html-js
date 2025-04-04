@@ -9,7 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest  # Define o sistema operacional para executar o workflow.
-
+    permissions:
+      contents: read
+      pages: write
+      id-token: write  # Necessário para autenticação OIDC
+    
     steps:
       - uses: actions/checkout@v3  # Faz o "checkout" do código do repositório para a máquina virtual.
 
