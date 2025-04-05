@@ -12,7 +12,14 @@ jobs:
     permissions:
       contents: read
       pages: write
-      id-token: write  # Permissão necessária para OIDC
+      id-token: write 
+     # --- PASSO ADICIONADO PARA RESOLVER O ERRO ---
+      - name: Force download upload-artifact@v4
+        uses: actions/upload-artifact@v4
+        with:
+          name: temp
+          path: /tmp/empty  # Pasta vazia (só para evitar erro)
+          if-no-files-found: ignore # Permissão necessária para OIDC
 
     steps:
       # Passo 1: Checkout do código
