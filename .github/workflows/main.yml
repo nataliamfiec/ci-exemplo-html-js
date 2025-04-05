@@ -1,5 +1,4 @@
-name: CI/CD Pipeline
-
+name: CI
 
 on:
   push:
@@ -7,50 +6,30 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
+  build:
+    runs-on: ubuntu-latest
 
     steps:
-      # --- PASSO ADICIONADO PARA RESOLVER O ERRO ---
-      - name: Force download upload-artifact@v4
-        uses: actions/upload-artifact@v4
-        with:
-          name: temp
-          path: /tmp/empty
-          if-no-files-found: ignore
+      - uses: actions/checkout@v3
 
-      # Passo 1: Checkout do código
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Passo 2: Executar testes (simulado)
-      - name: Run tests
+      - name: Executar testes
         run: |
-          echo "Testes simulados (adicione testes reais depois!)"
-          exit 0
+          echo "Nenhum teste implementado ainda. Adicione testes em script.js!"
+          echo "Podemos adicionar testes com Jest ou Cypress no futuro."
+          echo "Testes simulados aprovados"
+          exit 0 # Simula testes passando
 
-      # Passo 3: Configurar GitHub Pages
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      # Passo 4: Build do projeto
-      - name: Build project
-        run: |
-          mkdir -p dist
-          echo "<html><body><h1>Site Funcionando!</h1></body></html>" > dist/index.html
-
-      # Passo 5: Upload do artefato
-      - name: Upload Pages Artifact
+      - name: Upload artifacts
         uses: actions/upload-pages-artifact@v2
         with:
-          path: 'dist'
+          path: . # Diretório a ser deployado (raiz do repositório neste caso)
 
-      # Passo 6: Deploy (apenas na main)
-      - name: Deploy to GitHub Pages
+      - name: Deploy para GitHub Pages
         if: github.ref == 'refs/heads/main'
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v2
