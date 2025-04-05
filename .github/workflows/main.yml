@@ -1,5 +1,6 @@
 name: CI/CD Pipeline
 
+
 on:
   push:
     branches: [ main ]
@@ -12,16 +13,17 @@ jobs:
     permissions:
       contents: read
       pages: write
-      id-token: write 
-     # --- PASSO ADICIONADO PARA RESOLVER O ERRO ---
+      id-token: write
+
+    steps:
+      # --- PASSO ADICIONADO PARA RESOLVER O ERRO ---
       - name: Force download upload-artifact@v4
         uses: actions/upload-artifact@v4
         with:
           name: temp
-          path: /tmp/empty  # Pasta vazia (só para evitar erro)
-          if-no-files-found: ignore # Permissão necessária para OIDC
+          path: /tmp/empty
+          if-no-files-found: ignore
 
-    steps:
       # Passo 1: Checkout do código
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,35 +31,26 @@ jobs:
       # Passo 2: Executar testes (simulado)
       - name: Run tests
         run: |
-          echo "Nenhum teste implementado ainda. Adicione testes em script.js!"
-          echo "Podemos adicionar testes com Jest ou Cypress no futuro."
-          echo "Testes simulados aprovados"
+          echo "Testes simulados (adicione testes reais depois!)"
           exit 0
 
       # Passo 3: Configurar GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      # Passo 4: Build do projeto (simulado - substitua pelo seu build real)
+      # Passo 4: Build do projeto
       - name: Build project
         run: |
-          echo "Simulando construção do projeto..."
           mkdir -p dist
-          echo "<html><body><h1>Meu Site</h1></body></html>" > dist/index.html
+          echo "<html><body><h1>Site Funcionando!</h1></body></html>" > dist/index.html
 
-      - name: Upload Regular Artifact (Workaround)
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist-files
-          path: dist
-
-      # Passo 5: Upload do artefato para deploy
-      - name: Upload artifact
+      # Passo 5: Upload do artefato
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: 'dist'  # Pasta contendo os arquivos para deploy
+          path: 'dist'
 
-      # Passo 6: Deploy (apenas na branch main)
+      # Passo 6: Deploy (apenas na main)
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
         uses: actions/deploy-pages@v3
