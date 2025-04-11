@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/upload-artifact@v2
+      - uses: actions/checkout@v4
 
 
       - name: Executar testes
@@ -27,10 +27,10 @@ jobs:
           exit 0 # Simula testes passando
 
       - name: Upload artifacts
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: . # Diretório a ser deployado (raiz do repositório neste caso)
 
       - name: Deploy para GitHub Pages
         if: github.ref == 'refs/heads/main'
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
